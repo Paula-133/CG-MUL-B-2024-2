@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabajo Proyecciones</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgb(196, 186, 238); /* Fondo en el color especificado */
+            color: rgb(138, 0, 252); /* Color del texto negro */
+            margin: 0;
+            padding: 20px;
+        }
+        #controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        canvas {
+            border: 1px solid black; /* Borde negro */
+            background-color: #e0b8ec; /* Fondo gris claro para el canvas */
+        }
+        input, button {
+            margin: 5px;
+        }
+        .red-button {
+            background-color: red; /* Botón rojo */
+            color: white; /* Texto blanco */
+        }
+        .projection-buttons {
+            display: flex;
+            flex-direction: column; /* Disposición vertical para las proyecciones */
+            align-items: flex-end; /* Alinear a la derecha */
+        }
+    </style>
+</head>
+<body>
+    <h1>Trabajo Proyecciones</h1>
+    
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+
+    <div id="controls">
+        <select id="figureSelector">
+            <option value="">Selecciona una figura</option>
+            <option value="cuadrado">Cuadrado</option>
+            <option value="triangulo">Triángulo</option>
+            <option value="circulo">Círculo</option>
+        </select>
+        <button onclick="drawFigure()">Dibujar</button>
+        <button class="red-button" onclick="clearCanvas()">BORRAR</button>
+    </div>
+
+    <div class="projection-buttons">
+        <button onclick="setProjection('perspectiva')">Perspectiva</button>
+        <button onclick="setProjection('ortografica')">Ortográfica</button>
+        <button onclick="setProjection('isometrica')">Isométrica</button>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        class Cuadrado {
+            constructor(x, y, size) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+            }
+
+            dibujar() {
+                ctx.strokeStyle = 'black'; // Color del borde negro
+                ctx.strokeRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        class Triangulo {
+            constructor(x, y, size) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+            }
+
+            dibujar() {
+                ctx.strokeStyle = 'black'; // Color del borde negro
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y - this.size / 2);
+                ctx.lineTo(this.x - this.size / 2, this.y + this.size / 2);
+                ctx.lineTo(this.x + this.size / 2, this.y + this.size / 2);
+                ctx.closePath();
+                ctx.stroke();
+            }
+        }
+
+        class Circulo {
+            constructor(x, y, radius) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+            }
+
+            dibujar() {
+                ctx.strokeStyle = 'black'; // Color del borde negro
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+
+        function drawFigure() {
+            const selectedFigure = document.getElementById('figureSelector').value;
+            clearCanvas();
+
+            const centerX = 200; // Centro del canvas
+            const centerY = 200; // Centro del canvas
+
+            let figura;
+
+            if (selectedFigure === 'cuadrado') {
+                figura = new Cuadrado(centerX - 50, centerY - 50, 100);
+            } else if (selectedFigure === 'triangulo') {
+                figura = new Triangulo(centerX, centerY, 100);
+            } else if (selectedFigure === 'circulo') {
+                figura = new Circulo(centerX, centerY, 50);
+            }
+
+            if (figura) {
+                figura.dibujar();
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('figureSelector').selectedIndex = 0; // Resetea el selector
+        }
+
+        function setProjection(type) {
+            console.log(`Proyección: ${type}`); // Placeholder para la función de proyección
+        }
+    </script>
+</body>
+</html>
