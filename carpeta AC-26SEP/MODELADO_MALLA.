@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Three.js Scene</title>
+  <style>
+    /* Estilos para el canvas */
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <!-- Crear un canvas para dibujar la escena -->
+  <canvas id="three-canvas" width="400" height="400"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Crear la escena, la cámara y el renderizador
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('three-canvas'),
+      antialias: true
+    });
+
+    // Configurar la cámara y el renderizador
+    camera.position.z = 5;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Agregar objetos a la escena
+    const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 }); // Amarillo
+    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    scene.add(cube);
+
+    const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Rojo
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.x = 2;
+    scene.add(sphere);
+
+    const coneGeometry = new THREE.ConeGeometry(0.5, 2, 32);
+    const coneMaterial = new THREE.MeshBasicMaterial({ color: 0xffa500 }); // Naranja
+    const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    cone.position.x = -2;
+    scene.add(cone);
+
+    // Función para renderizar la escena
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+
+    // Iniciar la renderización
+    animate();
+  </script>
+</body>
+</html>
