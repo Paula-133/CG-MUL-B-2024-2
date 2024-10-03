@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Cubos</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        let scene, camera, renderer;
+        const cubes = [];
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            camera.position.z = 5;
+
+            // Crear el primer cubo
+            createCubes(1);
+
+            // Manejar el evento de tecla F5
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'F5') {
+                    event.preventDefault(); // Prevenir el comportamiento por defecto de F5
+                    const randomCount = Math.floor(Math.random() * 5) + 1;
+                    createCubes(randomCount);
+                }
+            });
+
+            animate();
+        }
+
+        function createCubes(count) {
+            for (let i = 0; i < count; i++) {
+                const geometry = new THREE.BoxGeometry();
+                const material = new THREE.MeshBasicMaterial({ wireframe: true });
+                const cube = new THREE.Mesh(geometry, material);
+
+                // Posicionar los cubos alineados
+                cube.position.x = (cubes.length + 1) * 2; // Espaciado entre cubos
+                cube.rotation.y = Math.PI / 4; // Rotación inicial
+
+                scene.add(cube);
+                cubes.push(cube);
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotar todos los cubos en el mismo sentido
+            cubes.forEach(cube => {
+                cube.rotation.y += 0.01; // Velocidad de rotación
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>       
